@@ -1,0 +1,358 @@
+\begin{frame}{\Zoo en pratique}
+\Huge
+\centering
+\begin{tabular}{ccccc}
+      \begin{tabular}{c}
+          \includegraphics[scale=0.25]{images/ocaml.png}
+        \\
+          \includegraphics[scale=0.1]{images/dune.png}
+      \end{tabular}
+    &&
+      $\stackrel{\mbox{\Large\texttt{ocaml2zoo}}}{\longrightarrow}$
+    &&
+      \begingroup
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabular}{c}
+            \includegraphics[scale=0.5]{images/iris.png}
+          \\
+            \textcolor{Green}{\Zoo}
+          \\
+            \includegraphics[scale=0.25]{images/rocq.png}
+        \end{tabular}
+      \endgroup
+\end{tabular}
+\end{frame}
+
+\newcommand{\colorDomainslib}{blue}
+\newcommand{\colorSaturn}{red}
+\newcommand{\colorScheduler}{cyan}
+\newcommand{\colorQueue}{orange}
+
+\begin{frame}[fragile]{\Zoo en pratique}
+\centering
+\begin{tabular}{ccc}
+    \begin{minipage}{0.4\textwidth}\dirtree{%
+      .1 project.
+        .2 dune-project.
+        .2 lib.
+          .3 \textcolor{\colorDomainslib}{domainslib}.
+            .4 dune.
+            .4 \textcolor{\colorScheduler}{scheduler.ml}.
+            .4 scheduler.mli.
+          .3 \textcolor{\colorSaturn}{saturn}.
+            .4 dune.
+            .4 \textcolor{\colorQueue}{queue.ml}.
+            .4 queue.mli.
+    }\end{minipage}
+  &
+    $\Longrightarrow$
+  &
+    \begin{minipage}{0.4\textwidth}\dirtree{%
+      .1 theories.
+        .2 \textcolor{\colorDomainslib}{domainslib}.
+          .3 \textcolor{\colorScheduler}{scheduler\_\_code.v}.
+          .3 \textcolor{\colorScheduler}{scheduler\_\_types.v}.
+        .2 \textcolor{\colorSaturn}{saturn}.
+          .3 \textcolor{\colorQueue}{queue\_\_code.v}.
+          .3 \textcolor{\colorQueue}{queue\_\_types.v}.
+    }\end{minipage}
+\end{tabular}
+\vfill
+\Large
+\begin{center}
+  \texttt{\$ ocaml2zoo project theories}
+\end{center}
+\begin{overbox}<2>
+  \centering
+  \texttt{queue.ml}
+  \medskip
+  \begin{minted}{ocaml}
+  let pop t = ...
+  \end{minted}
+\end{overbox}
+\begin{overbox}<4>
+  \centering
+  \texttt{queue\_\_code.v}
+  \medskip
+  \begin{minted}{coq}
+  Definition queue_pop : val := ...
+  \end{minted}
+\end{overbox}
+\begin{overbox}<6>
+  \centering
+  \texttt{scheduler.ml}
+  \medskip
+  \begin{minted}{ocaml}
+  let get_task =
+    ... Saturn.Queue.pop ...
+  \end{minted}
+\end{overbox}
+\begin{overbox}<8>
+  \centering
+  \texttt{scheduler\_\_code.v}
+  \medskip
+  \begin{minted}{coq}
+  From saturn Require Import
+    queue__code
+    queue__types.
+  
+  Definition scheduler_get_task : val :=
+    ... queue_pop ...
+  \end{minted}
+\end{overbox}
+\only<9>{}
+\end{frame}
+
+\begin{frame}[fragile]{\Zoo en pratique}
+\centering
+\begin{tabular}{ccc}
+    \begin{minipage}{0.4\textwidth}\dirtree{%
+      .1 project.
+        .2 dune-project.
+        .2 lib.
+          .3 \textcolor{\colorDomainslib}{domainslib}.
+            .4 dune.
+            .4 \textcolor{\colorScheduler}{scheduler.ml}.
+            .4 scheduler.mli.
+    }\end{minipage}
+  &
+    $\Longrightarrow$
+  &
+    \begin{minipage}{0.4\textwidth}\dirtree{%
+      .1 theories.
+        .2 \textcolor{\colorDomainslib}{domainslib}.
+          .3 \textcolor{\colorScheduler}{scheduler\_\_code.v}.
+          .3 \textcolor{\colorScheduler}{scheduler\_\_types.v}.
+    }\end{minipage}
+\end{tabular}
+\vfill
+\Large
+\begin{center}
+  \texttt{\$ ocaml2zoo project theories}
+\end{center}
+\begin{overbox}<2>
+  \centering
+  \texttt{scheduler\_\_code.v}
+  \medskip
+  \begin{minted}{coq}
+  From saturn Require Import
+    queue__code
+    queue__types.
+  
+  Definition scheduler_get_task : val :=
+    ... queue_pop ...
+  \end{minted}
+\end{overbox}
+\only<3>{}
+\end{frame}
+
+\begin{frame}[fragile]{\Zoo en pratique}
+\begin{minipage}{0.49\textwidth}
+  \begin{minted}{coq}
+Lemma stack_push_spec_seq t ι v :
+  {{{
+    stack_model t vs
+  }}}
+    stack_push t v
+  {{{
+    RET ();
+    stack_model t (v :: vs)
+  }}}.
+Proof.
+  ...
+Qed.
+  \end{minted}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+  \begin{minted}{coq}
+Lemma stack_push_spec_atomic t ι v :
+  <<< 
+    stack_inv t ι
+  | ∀∀ vs,
+    stack_model t vs 
+  >>>
+    stack_push t v @ ↑ι
+  <<<
+    stack_model t (v :: vs)
+  | RET (); True
+  >>>.
+Proof.
+  ...
+Qed.
+  \end{minted}
+\end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]{Types algébriques de données}
+\begin{minipage}{0.49\textwidth}
+  \begin{minted}{ocaml}
+type 'a t =
+  | Nil
+  | Cons of 'a * 'a t
+
+let rec map fn t =
+  match t with
+  | Nil -> Nil
+  | Cons (x, t) ->
+      let y = fn x in
+      Cons (y, map fn t)
+  \end{minted}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+  \begin{minted}{coq}
+Notation "'Nil'"  := (
+  in_type "t" 0
+)(in custom zoo_tag).
+Notation "'Cons'" := (
+  in_type "t" 1
+)(in custom zoo_tag).
+
+Definition map : val :=
+  rec: "map" "fn" "t" =>
+    match: "t" with
+    | Nil => §Nil
+    | Cons "x" "t" =>
+        let: "y" := "fn" "x" in
+        ‘Cons( "y", "map" "fn" "t" )
+    end.
+  \end{minted}
+\end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]{Enregistrements}
+\begin{minipage}{0.49\textwidth}
+  \begin{minted}{ocaml}
+type 'a t =
+  { f1: 'a;
+    f2: 'a;
+  }
+
+let swap t =
+  let f1 = t.f1 in
+  t.f1 <- t.f2 ;
+  t.f2 <- f1
+  \end{minted}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+  \begin{minted}{coq}
+Notation "'f1'" := (
+  in_type "t" 0
+)(in custom zoo_field).
+Notation "'f2'" := (
+  in_type "t" 1
+)(in custom zoo_field).
+
+Definition swap : val :=
+  fun: "t" =>
+    let: "f1" := "t".{f1} in
+    "t" <-{f1} "t".{f2} ;;
+    "t" <-{f2} "f1".
+  \end{minted}
+\end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]{Enregistrements en place}
+\begin{minipage}{0.49\textwidth}
+  \begin{minted}{ocaml}
+type 'a node =
+  | Null
+  | Node of
+    { mutable next: 'a node;
+      mutable data: 'a;
+    }
+  \end{minted}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+  \begin{minted}{coq}
+Notation "'Null'" := (
+  in_type "node" 0
+)(in custom zoo_tag).
+Notation "'Node'" := (
+  in_type "node" 1
+)(in custom zoo_tag).
+
+Notation "'next'" := (
+  in_type "node__Node" 0
+)(in custom zoo_field).
+Notation "'data'" := (
+  in_type "node__Node" 1
+)(in custom zoo_field).
+  \end{minted}
+\end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]{Fonctions mutuellement récursives}
+\begin{minipage}{0.49\textwidth}
+  \begin{minted}{ocaml}
+let f x = g x
+and g x = f x
+  \end{minted}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+  \begin{minted}{coq}
+Definition f_g := (
+  recs: "f" "x" => "g" "x"
+  and:  "g" "x" => "f" "x"
+)%zoo_recs.
+
+(* boilerplate *)
+
+Definition f := ValRecs 0 f_g.
+Definition g := ValRecs 1 f_g.
+
+Instance : AsValRecs' f 0 f_g [f;g].
+Proof. done. Qed.
+Instance : AsValRecs' g 1 f_g [f;g].
+Proof. done. Qed.
+  \end{minted}
+\end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]{Concurrence}
+\begin{adjustwidth}{-1em}{-1em}
+\begin{tabular}{ll}
+    \mintinline[escapeinside=||]{ocaml}{Atomic.set |$e_1$| |$e_2$|} &
+    $e_1\ \texttt{<-}\ e_2$
+  \\
+    \mintinline[escapeinside=||]{ocaml}{Atomic.exchange |$e_1$| |$e_2$|} &
+    $\texttt{Xchg}\ e_1 \texttt{.[contents]}\ e_2$
+  \\
+    \mintinline[escapeinside=||]{ocaml}{Atomic.compare_and_set |$e_1$| |$e_2$| |$e_3$|} &
+    $\texttt{CAS}\ e_1 \texttt{.[contents]}\ e_2\ e_3$
+  \\
+    \mintinline[escapeinside=||]{ocaml}{Atomic.fetch_and_add |$e_1$| |$e_2$|} &
+    $\texttt{FAA}\ e_1 \texttt{.[contents]}\ e_2$
+  \\
+    \mintinline[escapeinside=||]{ocaml}{Atomic.Loc.exchange [%atomic.loc |$e_1$|.|$f$|] |$e_2$|} &
+    $\texttt{Xchg}\ e_1 \texttt{.[} f \texttt{]}\ e_2$
+  \\
+    \mintinline[escapeinside=||]{ocaml}{Atomic.Loc.compare_and_set [%atomic.loc |$e_1$|.|$f$|] |$e_2$| |$e_3$|} &
+    $\texttt{CAS}\ e_1 \texttt{.[} f \texttt{]}\ e_2\ e_3$
+  \\
+    \mintinline[escapeinside=||]{ocaml}{Atomic.Loc.fetch_and_add [%atomic.loc |$e_1$|.|$f$|] |$e_2$|} &
+    $\texttt{FAA}\ e_1 \texttt{.[} f \texttt{]}\ e_2$
+\end{tabular}
+\end{adjustwidth}
+\end{frame}
+
+\begin{frame}{Bibliothèque standard}
+\LARGE
+\begin{minipage}{0.5\textwidth}
+  \begin{itemize}
+    \item \texttt{Array}
+    \item \texttt{Dynarray}
+    \item \texttt{List}
+    \item \texttt{Stack}
+    \item \texttt{Queue}
+    \item \texttt{Deque}
+  \end{itemize}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+  \begin{itemize}
+    \item \texttt{Domain}
+    \item \texttt{Atomic\_array}
+    \item \texttt{Mutex}
+    \item \texttt{Condition}
+  \end{itemize}
+\end{minipage}
+\end{frame}

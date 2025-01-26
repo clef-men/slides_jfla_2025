@@ -1,0 +1,118 @@
+\begin{frame}{Motivation}
+\centering
+\LARGE
+Vérification de programmes \OCaml~5 \emph{concurrents}.
+\vfill
+\begingroup
+  \setlength{\tabcolsep}{20pt}
+  \begin{tabular}{cc}
+      \begin{tabular}{c}
+          \includegraphics[scale=0.2]{images/kcas.pdf}
+        \\
+          \Saturn
+        \\
+          \Kcas
+      \end{tabular}
+    &
+      \begin{tabular}{c}
+          \includegraphics[scale=0.6]{images/iris.png}
+        \\\\
+          \includegraphics[scale=0.3]{images/rocq.png}
+      \end{tabular}
+  \end{tabular}
+\endgroup
+\only<2>{
+\begin{overbox}
+  \centering
+  \textbf{Logique de séparation \Iris}
+  \medskip
+  \begin{itemize}
+    \item État logique personnalisable
+      \begin{itemize}
+        \Large
+        \item Protocoles concurrents
+        \item Atomicité logique
+        \item Points de linéarisation externes
+        \item Points de linéarisation dépendants du futur
+      \end{itemize}
+    \item Mécanisation en \Rocq
+    \item Modèle mémoire faible
+  \end{itemize}
+\end{overbox}
+}
+\only<3>{}
+\end{frame}
+
+\begin{frame}{À la recherche d'un langage de vérification}
+\begin{adjustwidth}{-1em}{-1em}
+\large
+\begin{tabular}{lccccc}
+    \textbf{langage} &
+    \textbf{concurrence} &
+    \textbf{\Iris} &
+    \textbf{$\simeq$ \OCaml} &
+    \textbf{traduction} &
+    \textbf{automatisation}
+  \\\\
+    \Cameleer &
+    \faFrownO &
+    \faFrownO &
+    \faSmileO &
+    \faSmileO &
+    \textcolor{Green}{\faSmileO}
+  \\
+    \texttt{coq\_of\_ocaml} &
+    \faFrownO &
+    \faFrownO &
+    \faSmileO &
+    \faSmileO &
+    \faFrownO
+  \\
+    \CFML &
+    \faFrownO &
+    \faFrownO &
+    \faSmileO &
+    \faSmileO &
+    \faFrownO
+  \\
+    \Osiris &
+    \faFrownO &
+    \textcolor{Green}{\faSmileO} &
+    \faSmileO &
+    \faSmileO &
+    \faFrownO
+  \\
+    \HeapLang &
+    \textcolor{Green}{\faSmileO} &
+    \textcolor{Green}{\faSmileO} &
+    \textcolor{red}{\faFrownO} &
+    \textcolor{red}{\faFrownO} &
+    \faMehO
+  \\
+    \Zoo &
+    \textcolor{Green}{\faSmileO} &
+    \textcolor{Green}{\faSmileO} &
+    \faSmileO &
+    \faSmileO &
+    \faMehO
+\end{tabular}
+\end{adjustwidth}
+\end{frame}
+
+\begin{frame}{\Zoo, un langage pragmatique}
+\centering
+\Large
+\begin{itemize}
+  \item Fragment formalisé d'\OCaml~5 suffisamment expressif pour vérifier \Saturn et \Kcas.
+  \item Sémantique formelle correcte vis-à-vis d'\OCaml.
+  \setlength\itemsep{1.5em}
+  \item Instance \Iris.
+  \item Commodités :
+    \begin{itemize}
+      \normalsize
+      \item outil de traduction d'\OCaml vers \Zoo
+      \item code reconnaissable
+      \item automatisation minimale (\Diaframe)
+    \end{itemize}
+\end{itemize}
+\end{frame}

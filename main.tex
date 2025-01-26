@@ -1,0 +1,101 @@
+\documentclass[aspectratio=169, xcolor=dvipsnames]{beamer}
+
+% ---------------------------------------------------------
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+% ---------------------------------------------------------
+
+\usepackage{appendixnumberbeamer}
+
+\setbeamertemplate{navigation symbols}{}
+
+\addtobeamertemplate{footline}{%
+	\hspace*{\fill}%
+	\llap{%
+		\insertframenumber\,/\,\inserttotalframenumber%
+		\hspace{5pt}%
+	}
+	\vskip4pt%
+}
+
+% ---------------------------------------------------------
+
+\usepackage{xcolor}
+
+\usepackage{graphicx}
+
+\usepackage{changepage}
+
+\usepackage{fontawesome}
+
+\usepackage{dirtree}
+
+\usepackage{subcaption}
+
+% ---------------------------------------------------------
+
+\usepackage{minted}
+
+\DeclareUnicodeCharacter{3B9}{$\iota$}
+\DeclareUnicodeCharacter{2200}{$\forall$}
+\DeclareUnicodeCharacter{2203}{$\exists$}
+\DeclareUnicodeCharacter{2260}{$\neq$}
+\DeclareUnicodeCharacter{3A3}{$\Sigma$}
+\DeclareUnicodeCharacter{2217}{$\ast$}
+\DeclareUnicodeCharacter{231C}{$\ulcorner$}
+\DeclareUnicodeCharacter{231D}{$\urcorner$}
+
+% ---------------------------------------------------------
+
+\usepackage{amsmath}
+
+\usepackage{mathtools}
+
+% ---------------------------------------------------------
+
+\usepackage{overtools}
+
+\usepackage{macros}
+
+% ---------------------------------------------------------
+
+\title{
+  \Zoo: Un cadriciel pour la vérification \\
+  de programmes \OCaml~5 concurrents \\
+  en logique de séparation
+}
+\author{
+  Clément Allain
+}
+
+% ---------------------------------------------------------
+% ---------------------------------------------------------
+
+\begin{document}
+
+% ---------------------------------------------------------
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+% ---------------------------------------------------------
+
+\input{introduction}
+\input{zoo}
+\input{egalite}
+
+% ---------------------------------------------------------
+
+\begin{frame}[plain, noframenumbering]
+\centering
+\huge
+Merci de votre attention !
+\end{frame}
+
+% ---------------------------------------------------------
+
+\end{document}
