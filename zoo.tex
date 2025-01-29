@@ -310,6 +310,7 @@ Proof. done. Qed.
 
 \begin{frame}[fragile]{Concurrence}
 \begin{adjustwidth}{-1em}{-1em}
+\centering
 \begin{tabular}{ll}
     \mintinline[escapeinside=||]{ocaml}{Atomic.set |$e_1$| |$e_2$|} &
     $e_1\ \texttt{<-}\ e_2$
@@ -332,6 +333,9 @@ Proof. done. Qed.
     \mintinline[escapeinside=||]{ocaml}{Atomic.Loc.fetch_and_add [%atomic.loc |$e_1$|.|$f$|] |$e_2$|} &
     $\texttt{FAA}\ e_1 \texttt{.[} f \texttt{]}\ e_2$
 \end{tabular}
+\vfill
+\url{https://github.com/ocaml/ocaml/pull/13404}
+\url{https://github.com/ocaml/ocaml/pull/13707}
 \end{adjustwidth}
 \end{frame}
 
