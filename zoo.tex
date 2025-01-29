@@ -223,8 +223,8 @@ Definition map : val :=
 \begin{minipage}{0.49\textwidth}
   \begin{minted}{ocaml}
 type 'a t =
-  { f1: 'a;
-    f2: 'a;
+  { mutable f1: 'a;
+    mutable f2: 'a;
   }
 
 let swap t =
