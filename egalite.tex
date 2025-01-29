@@ -62,7 +62,7 @@ let rec push t v =
 \begin{frame}[fragile]{Égalité physique : \texttt{Eio.Rcfd}}
 \begin{minted}{ocaml}
 type state = Open of Unix.file_descr | Closing of (unit -> unit)
-type t = { mutable ops: int [@atomic]; mutable state: state [@atomic]; }
+type t = { mutable ops: int [@atomic]; mutable state: state [@atomic] }
 
 let make fd = { ops= 0; state= Open fd }
 
