@@ -123,15 +123,15 @@ let close t =
 \end{minted}
 \end{frame}
 
-\begin{frame}[fragile]{Constructeurs uniques}
+\begin{frame}[fragile]{Constructeurs génératifs}
 \Large
 \begin{minted}{ocaml}
-type 'a list =
+type 'a liste =
   | Nil
-  | Cons of 'a * 'a list [@unique]
+  | Cons of 'a * 'a liste [@generative]
 
 type state =
-  | Open of Unix.file_descr [@unique] [@zoo.reveal]
+  | Open of Unix.file_descr [@generative] [@zoo.reveal]
   | Closing of (unit -> unit)
 \end{minted}
 \end{frame}
