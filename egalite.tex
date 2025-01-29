@@ -17,6 +17,14 @@ let rec push t v =
 \end{minted}
 \end{frame}
 
+\begin{frame}[fragile]{Partage}
+\Large
+\begin{minted}{ocaml}
+let test1 = Some 0 == Some 0 (* true *)
+let test2 = [0;1]  == [0;1]  (* true *)
+\end{minted}
+\end{frame}
+
 \begin{frame}[fragile]{Conflits de représentation des valeurs}
 \Large
 \begin{minted}{ocaml}
@@ -26,15 +34,7 @@ let test3 = Obj.repr []    == Obj.repr 0 (* true *)
 \end{minted}
 \end{frame}
 
-\begin{frame}[fragile]{Partage}
-\Large
-\begin{minted}{ocaml}
-let test1 = Some 0 == Some 0 (* true *)
-let test2 = [0;1]  == [0;1]  (* true *)
-\end{minted}
-\end{frame}
-
-\begin{frame}[fragile]{Conflits + partage}
+\begin{frame}[fragile]{Partage + conflits}
 \Large
 \begin{minted}{ocaml}
 type any =
