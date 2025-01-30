@@ -62,45 +62,45 @@
 \begin{center}
   \texttt{\$ ocaml2zoo project theories}
 \end{center}
-\begin{overbox}<2>
-  \centering
-  \texttt{queue.ml}
-  \medskip
-  \begin{minted}{ocaml}
-  let pop t = ...
-  \end{minted}
-\end{overbox}
-\begin{overbox}<4>
-  \centering
-  \texttt{queue\_\_code.v}
-  \medskip
-  \begin{minted}{coq}
-  Definition queue_pop : val := ...
-  \end{minted}
-\end{overbox}
-\begin{overbox}<6>
-  \centering
-  \texttt{scheduler.ml}
-  \medskip
-  \begin{minted}{ocaml}
-  let get_task =
-    ... Saturn.Queue.pop ...
-  \end{minted}
-\end{overbox}
-\begin{overbox}<8>
-  \centering
-  \texttt{scheduler\_\_code.v}
-  \medskip
-  \begin{minted}{coq}
-  From saturn Require Import
-    queue__code
-    queue__types.
-  
-  Definition scheduler_get_task : val :=
-    ... queue_pop ...
-  \end{minted}
-\end{overbox}
-\only<9>{}
+%\begin{overbox}<2>
+%  \centering
+%  \texttt{queue.ml}
+%  \medskip
+%  \begin{minted}{ocaml}
+%  let pop t = ...
+%  \end{minted}
+%\end{overbox}
+%\begin{overbox}<4>
+%  \centering
+%  \texttt{queue\_\_code.v}
+%  \medskip
+%  \begin{minted}{coq}
+%  Definition queue_pop : val := ...
+%  \end{minted}
+%\end{overbox}
+%\begin{overbox}<6>
+%  \centering
+%  \texttt{scheduler.ml}
+%  \medskip
+%  \begin{minted}{ocaml}
+%  let get_task =
+%    ... Saturn.Queue.pop ...
+%  \end{minted}
+%\end{overbox}
+%\begin{overbox}<8>
+%  \centering
+%  \texttt{scheduler\_\_code.v}
+%  \medskip
+%  \begin{minted}{coq}
+%  From saturn Require Import
+%    queue__code
+%    queue__types.
+%  
+%  Definition scheduler_get_task : val :=
+%    ... queue_pop ...
+%  \end{minted}
+%\end{overbox}
+%\only<9>{}
 \end{frame}
 
 \begin{frame}[fragile]{\Zoo en pratique}
@@ -130,20 +130,20 @@
 \begin{center}
   \texttt{\$ ocaml2zoo project theories}
 \end{center}
-\begin{overbox}<2>
-  \centering
-  \texttt{scheduler\_\_code.v}
-  \medskip
-  \begin{minted}{coq}
-  From saturn Require Import
-    queue__code
-    queue__types.
-  
-  Definition scheduler_get_task : val :=
-    ... queue_pop ...
-  \end{minted}
-\end{overbox}
-\only<3>{}
+%\begin{overbox}<2>
+%  \centering
+%  \texttt{scheduler\_\_code.v}
+%  \medskip
+%  \begin{minted}{coq}
+%  From saturn Require Import
+%    queue__code
+%    queue__types.
+%  
+%  Definition scheduler_get_task : val :=
+%    ... queue_pop ...
+%  \end{minted}
+%\end{overbox}
+%\only<3>{}
 \end{frame}
 
 \begin{frame}[fragile]{\Zoo en pratique}
@@ -284,7 +284,7 @@ Notation "'data'" := (
 \begin{frame}[fragile]{Fonctions mutuellement récursives}
 \begin{minipage}{0.49\textwidth}
   \begin{minted}{ocaml}
-let f x = g x
+let rec f x = g x
 and g x = f x
   \end{minted}
 \end{minipage}
@@ -323,6 +323,8 @@ Proof. done. Qed.
   \\
     \mintinline[escapeinside=||]{ocaml}{Atomic.fetch_and_add |$e_1$| |$e_2$|} &
     $\texttt{FAA}\ e_1 \texttt{.[contents]}\ e_2$
+  \\\\
+    \mintinline[escapeinside=||]{ocaml}{type t = { ...; mutable |$f$|: |$\tau$| [@atomic]; ... }}
   \\
     \mintinline[escapeinside=||]{ocaml}{Atomic.Loc.exchange [%atomic.loc |$e_1$|.|$f$|] |$e_2$|} &
     $\texttt{Xchg}\ e_1 \texttt{.[} f \texttt{]}\ e_2$
